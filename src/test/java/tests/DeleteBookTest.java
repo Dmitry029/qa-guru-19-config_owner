@@ -49,5 +49,6 @@ public class DeleteBookTest extends BaseTest {
                 .spec(addBookResponseSpec)
                 .body("code", is("1205"))
                 .body("message", is("ISBN supplied is not available in Books Collection!")));
+        
     }
 }
