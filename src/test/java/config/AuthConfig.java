@@ -9,6 +9,7 @@ public interface AuthConfig extends Config {
 
     @Key("username")
     String userName();
+
     @Key("password")
     String password();
 }

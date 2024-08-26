@@ -3,6 +3,7 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.AuthConfig;
+import config.TestConfig;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
@@ -30,15 +31,17 @@ public class BaseTest {
 
     @BeforeAll
     static void setup() {
-        RestAssured.baseURI = "https://demoqa.com";
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = System.getProperty("windowSize", "1400x1050");
-        Configuration.browser = System.getProperty("browser", "chrome");
-        Configuration.browserVersion = System.getProperty("browserVersion", "126");
+        System.getProperty("env", "testing_local");
+
+        TestConfig config = ConfigFactory.create(TestConfig.class, System.getProperties());
+
+        RestAssured.baseURI = config.getBaseUrl();
+        Configuration.baseUrl = config.getBaseUrl();
+        Configuration.browserSize = config.getWindowSize();
+        Configuration.browser = config.getBrowser();
+        Configuration.browserVersion = config.getBrowserVersion();
+        Configuration.remote = config.getRemoteUrl();
         Configuration.pageLoadStrategy = "eager";
-       /* Configuration.remote = System.getProperty(
-                "remoteUrl",
-                "https://user1:1234@selenoid.autotests.cloud/wd/hub");*/
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
